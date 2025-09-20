@@ -35,3 +35,11 @@ module "iam" {
   dev_readonly_user_name = "innovatemart-dev-viewer"
   eks_cluster_name       = module.eks.cluster_name
 }
+
+module "databases" {
+  source                = "./modules/databases"
+  name                  = var.name
+  vpc_id                = module.vpc.vpc_id
+  private_subnet_ids    = module.vpc.private_subnet_ids
+  eks_security_group_id = module.eks.cluster_security_group_id
+}

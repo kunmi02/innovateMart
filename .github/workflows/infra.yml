@@ -1,0 +1,50 @@
+name: Infra CI/CD
+
+on:
+  pull_request:
+    paths: ['infra/**']
+  push:
+    branches: ['main']
+    paths: ['infra/**']
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+
+    defaults:
+      run:
+        working-directory: infra
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure AWS creds via OIDC
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::783479263698:role/gha-terraform-deployer
+          aws-region: eu-west-1
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.8.5
+
+      - name: Terraform init
+        run: terraform init
+
+      - name: Terraform fmt
+        run: terraform fmt -check
+
+      - name: Terraform validate
+        run: terraform validate
+
+      - name: Terraform plan (PR)
+        if: github.event_name == 'pull_request'
+        run: terraform plan -var-file=envs/prod/terraform.tfvars
+
+      - name: Terraform apply (main)
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        run: terraform apply -auto-approve -var-file=envs/prod/terraform.tfvars

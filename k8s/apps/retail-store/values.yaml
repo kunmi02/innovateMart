@@ -1,0 +1,25 @@
+global:
+  storageClass: ""
+
+redis:
+  replica:
+    replicaCount: 1
+
+mysql:
+  auth:
+    database: retail
+    username: retail
+    password: retailpw
+    rootPassword: rootpw
+
+postgresql:
+  auth:
+    database: retail
+    username: retail
+    password: retailpw
+    postgresPassword: rootpw
+
+rabbitmq:
+  auth:
+    username: retail
+    password: retailpw

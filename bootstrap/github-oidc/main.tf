@@ -61,6 +61,8 @@ data "aws_iam_policy_document" "assume_role" {
       variable = "token.actions.githubusercontent.com:sub"
       values = [
         "repo:kunmi02/retail-store-sample-app:ref:refs/heads/*",
+        "repo:kunmi02/retail-store-sample-app:ref:refs/tags/*",
+        "repo:kunmi02/retail-store-sample-app:ref:refs/heads/gh-readonly-queue/*",
         "repo:kunmi02/retail-store-sample-app:pull_request"
       ]
     }

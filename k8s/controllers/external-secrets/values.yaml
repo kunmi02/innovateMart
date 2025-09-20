@@ -1,3 +1,16 @@
-# External Secrets Operator values placeholder.
-# helm repo add external-secrets https://charts.external-secrets.io
-# helm upgrade --install external-secrets external-secrets/external-secrets -n controllers --create-namespace
+# External Secrets Operator values
+replicaCount: 1
+
+serviceAccount:
+  create: true
+  annotations:
+    eks.amazonaws.com/role-arn: "${AWS_ROLE_ARN}"  # This will be replaced with the actual role ARN
+
+securityContext:
+  enabled: true
+
+webhook:
+  create: true
+
+certController:
+  create: true

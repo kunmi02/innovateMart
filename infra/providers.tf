@@ -1,5 +1,5 @@
 terraform {
-  required_version = ">= 1.7.0"
+  required_version = ">= 1.4.0"
   required_providers {
     aws = {
       source  = "hashicorp/aws"
@@ -20,9 +20,13 @@ provider "aws" {
   region = var.region
 }
 
-# Configured after EKS is created via data sources in main.tf
+# Kubernetes provider configuration - only used after EKS cluster is created
 provider "kubernetes" {
-  host                   = data.aws_eks_cluster.this.endpoint
-  cluster_ca_certificate = base64decode(data.aws_eks_cluster.this.certificate_authority[0].data)
-  token                  = data.aws_eks_cluster_auth.this.token
+  host                   = try(data.aws_eks_cluster.this.endpoint, "")
+  cluster_ca_certificate = try(base64decode(data.aws_eks_cluster.this.certificate_authority[0].data), "")
+  token                  = try(data.aws_eks_cluster_auth.this.token, "")
+  ignore_annotations     = ["^kubectl.kubernetes.io/"]
+  
+  # Skip TLS verification for the first apply
+  insecure = true
 }

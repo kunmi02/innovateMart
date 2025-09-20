@@ -24,7 +24,7 @@ releases:
   - name: retail-rabbitmq
     namespace: retail
     chart: bitnami/rabbitmq
-    version: 14.5.4
+    version: 16.0.14
     values: [values.yaml]
 
   - name: retail-ui

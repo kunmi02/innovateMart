@@ -78,6 +78,3 @@ resource "aws_route_table_association" "private" {
   route_table_id = aws_route_table.private[each.key].id
 }
 
-output "vpc_id"             { value = aws_vpc.this.id }
-output "public_subnet_ids"  { value = [for s in aws_subnet.public  : s.id] }
-output "private_subnet_ids" { value = [for s in aws_subnet.private : s.id] }

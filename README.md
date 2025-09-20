@@ -84,7 +84,7 @@ The `view` role prevents resource mutations.
 
 - On **PRs** touching `infra/**`: `terraform plan` runs.
 - On **main** pushes: `terraform apply` runs.
-- The workflow assumes role: `arn:aws:iam::783479263698:role/gha-terraform-deployer` in `eu-west-1`.
+- The workflow role: `arn:aws:iam::783479263698:role/gha-terraform-deployer` in `eu-west-1`.
 
 > **Bootstrap note:** Create `gha-terraform-deployer` + GitHub OIDC provider once (via console or a separate Terraform stack). After that, the pipeline will work without static AWS keys.
 
